@@ -1,0 +1,13 @@
+-- IF NOT EXISTS to avoid spring boot create many times
+CREATE TABLE IF NOT EXISTS PRODUCT
+(
+    PRODUCT_ID         INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    PRODUCT_NAME       VARCHAR(128)  NOT NULL,
+    CATEGORY           VARCHAR(32)  NOT NULL,
+    IMAGE_URL          VARCHAR(256) NOT NULL,
+    PRICE              INT          NOT NULL,
+    STOCK              INT          NOT NULL,
+    DESCRIPTION        VARCHAR(1024),
+    CREATE_TIME        TIMESTAMP    NOT NULL,
+    LAST_MODIFIED_TIME TIMESTAMP    NOT NULL
+);

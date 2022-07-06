@@ -12,9 +12,7 @@ public interface ProductService {
 
 	public Optional<Product> findByProductId(Integer productId); 
 	
-	
 	public Product saveOrUpdate(Product product);
-	
 	
 	public void deleteByProductId(Integer productId);
 	

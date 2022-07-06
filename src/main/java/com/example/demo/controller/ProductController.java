@@ -30,7 +30,7 @@ import com.example.demo.util.Page;
 public class ProductController {
 
 	@Autowired
-	ProductService productService;
+	private ProductService productService;
 	
 	@GetMapping("/products")
 	public ResponseEntity<Page<Product>>  getProducts( 

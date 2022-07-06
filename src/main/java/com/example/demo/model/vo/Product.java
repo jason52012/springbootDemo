@@ -20,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.example.demo.constant.ProductCategory;
 
 @Entity
-@Table(name = "product")
+@Table(name = "PRODUCT")
 public class Product {
 	
 //	@Column(name = Name, nullable=false) => nullable belong to jpa jar for db validation 

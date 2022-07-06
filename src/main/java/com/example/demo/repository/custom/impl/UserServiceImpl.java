@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.model.requestParam.UserLoginRequestParam;
@@ -28,10 +29,13 @@ public class UserServiceImpl implements UserService{
 		if(oldUser != null) {
 			log.warn("該 email {} 已被註冊 -> ",  oldUser.getEmail());
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}else {
-			newUser.setEmail(userRegisterRequestParam.getEmail());
-			newUser.setPassword(userRegisterRequestParam.getPassword());
 		}
+		
+		// 密碼新增前，先用MD5加密取得雜奏值，雖說有碰撞機率(此忽略不計)
+		String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequestParam.getPassword().getBytes());
+		newUser.setEmail(userRegisterRequestParam.getEmail());
+		newUser.setPassword(hashedPassword);
+		
 		
 		
 		return userRepository.save(newUser);
@@ -45,8 +49,9 @@ public class UserServiceImpl implements UserService{
 			log.warn("該 email -> {} 尚未被會員註冊過 ",  userLoginRequestParam.getEmail());
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-			
-		if(oldUser.getPassword().equals(userLoginRequestParam.getPassword())) {
+		
+		String hashedPassword = DigestUtils.md5DigestAsHex(userLoginRequestParam.getPassword().getBytes());
+		if(oldUser.getPassword().equals(hashedPassword)) {
 			return oldUser;
 		}else {
 			log.warn("該 email -> {} 與 pawword  -> {} 沒有會員資料 ",  oldUser.getEmail(), oldUser.getPassword());

@@ -8,31 +8,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
-@Table(name = "USER")
-public class User {
+@Table(name = "USER_ORDER")
+public class UserOrder {
 
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "ORDER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer orderId;
+	
+	@Column(name = "USER_ID", nullable=false)
 	private Integer userId;
 	
-	@JsonProperty("e_mail")
-	@Column(name = "EMAIL", nullable=false)
-	private String email;
-	
-	@JsonIgnore
-	@Column(name = "PASSWORD", nullable=false)
-	private String password;
+	@Column(name = "TOTAL_AMOUNT", nullable=false)
+	private Integer totalAmount;
 	
 	@CreationTimestamp
 	@Column(name = "CREATE_TIME", updatable= false, nullable=false)
@@ -42,6 +35,13 @@ public class User {
 	@Column(name = "LAST_MODIFIED_TIME", nullable=false)
 	private Date lastModifiedTime;
 
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
 
 	public Integer getUserId() {
 		return userId;
@@ -51,20 +51,12 @@ public class User {
 		this.userId = userId;
 	}
 
-	public String getEmail() {
-		return email;
+	public Integer getTotalAmount() {
+		return totalAmount;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setTotalAmount(Integer totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public Date getCreateTime() {
@@ -85,11 +77,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", email=" + email + ", password=" + password + ", createTime=" + createTime
-				+ ", lastModifiedTime=" + lastModifiedTime + "]";
+		return "UserOrder [orderId=" + orderId + ", userId=" + userId + ", totalAmount=" + totalAmount + ", createTime="
+				+ createTime + ", lastModifiedTime=" + lastModifiedTime + "]";
 	}
 
-	
-	
-	
 }

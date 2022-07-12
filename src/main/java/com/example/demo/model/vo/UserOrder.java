@@ -1,6 +1,7 @@
 package com.example.demo.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.example.demo.model.grid.OrderItemGrid;
 
 @Entity
 @Table(name = "USER_ORDER")
@@ -34,6 +38,9 @@ public class UserOrder {
 	@UpdateTimestamp
 	@Column(name = "LAST_MODIFIED_TIME", nullable=false)
 	private Date lastModifiedTime;
+	
+	@Transient
+	List<OrderItemGrid> OrderItemGridList ;
 
 	public Integer getOrderId() {
 		return orderId;
@@ -75,10 +82,14 @@ public class UserOrder {
 		this.lastModifiedTime = lastModifiedTime;
 	}
 
-	@Override
-	public String toString() {
-		return "UserOrder [orderId=" + orderId + ", userId=" + userId + ", totalAmount=" + totalAmount + ", createTime="
-				+ createTime + ", lastModifiedTime=" + lastModifiedTime + "]";
+	public List<OrderItemGrid> getOrderItemGridList() {
+		return OrderItemGridList;
 	}
+
+	public void setOrderItemGridList(List<OrderItemGrid> orderItemGridList) {
+		OrderItemGridList = orderItemGridList;
+	}
+
+	
 
 }

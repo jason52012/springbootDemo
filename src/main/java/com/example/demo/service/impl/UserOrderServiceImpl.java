@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.model.grid.OrderItemGrid;
 import com.example.demo.model.requestParam.BuyItem;
 import com.example.demo.model.requestParam.UserOrderRequestParam;
 import com.example.demo.model.vo.OrderItem;
@@ -17,11 +18,12 @@ import com.example.demo.model.vo.Product;
 import com.example.demo.model.vo.UserOrder;
 import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.UserOrderRepository;
+import com.example.demo.repository.custom.CustomOrderItemGridRepository;
 import com.example.demo.repository.ProductRepository;
-import com.example.demo.service.userOrderService;
+import com.example.demo.service.UserOrderService;
 
 @Service
-public class userOrderServiceImpl implements  userOrderService{
+public class UserOrderServiceImpl implements  UserOrderService{
 
 	@Autowired
 	UserOrderRepository orderRepository;
@@ -31,6 +33,9 @@ public class userOrderServiceImpl implements  userOrderService{
 	
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	CustomOrderItemGridRepository customOrderItemGridRepository;
 
 	// @Transactional ensure two table insert successfully, or rollback all data
 	@Override
@@ -81,6 +86,22 @@ public class userOrderServiceImpl implements  userOrderService{
 		orderItemRepository.saveAll(orderItemList);
 		
 		return userOrder.getOrderId();
+	}
+
+	@Override
+	public UserOrder findByOrderId(Integer orderId) {
+		return orderRepository.getOne(orderId);
+	}
+
+	@Override
+	public UserOrder getAllOrderItemByItemId(Integer orderId) {
+		UserOrder  userOrder  = orderRepository.getOne(orderId);
+		List<OrderItemGrid> OrderItemGridList = new ArrayList<>();
+		if(userOrder != null) {
+			OrderItemGridList = customOrderItemGridRepository.getAllOrderItemByItemId(orderId);
+			userOrder.setOrderItemGridList(OrderItemGridList);
+		}
+		return userOrder;
 	}
 	
 }

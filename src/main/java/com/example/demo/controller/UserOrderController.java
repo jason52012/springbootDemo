@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,13 @@ import com.example.demo.service.UserOrderService;
 @RestController
 public class UserOrderController {
 
+	private final static Logger log = LoggerFactory.getLogger(UserOrderController.class);
+	
 	@Autowired
 	private UserOrderService userOrderService;
 	
 	// user -> login -> payment
+	
 	@PostMapping("/users/{userId}/orders")
 	public ResponseEntity<?> createOrder(@PathVariable Integer userId,
 										 @RequestBody @Valid UserOrderRequestParam userOrderRequestParam){

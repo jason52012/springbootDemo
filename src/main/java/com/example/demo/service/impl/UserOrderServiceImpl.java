@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.demo.model.form.OrderQueryForm;
 import com.example.demo.model.grid.OrderItemGrid;
 import com.example.demo.model.requestParam.BuyItem;
 import com.example.demo.model.requestParam.UserOrderRequestParam;
@@ -25,6 +26,7 @@ import com.example.demo.repository.OrderItemRepository;
 import com.example.demo.repository.UserOrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.custom.CustomOrderItemGridRepository;
+import com.example.demo.repository.custom.CustomUserOrderRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.UserOrderService;
 
@@ -47,6 +49,9 @@ public class UserOrderServiceImpl implements  UserOrderService{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CustomUserOrderRepository customUserOrderRepository;
 
 	// @Transactional ensure two table insert successfully, or rollback all data
 	@Override
@@ -134,6 +139,16 @@ public class UserOrderServiceImpl implements  UserOrderService{
 			userOrder.setOrderItemGridList(OrderItemGridList);
 		}
 		return userOrder;
+	}
+
+	@Override
+	public List<UserOrder> getOrders(OrderQueryForm orderQueryForm) {
+		return customUserOrderRepository.getOrders(orderQueryForm);
+	}
+
+	@Override
+	public Integer countOrder(OrderQueryForm orderQueryForm) {
+		return customUserOrderRepository.countOrder(orderQueryForm);
 	}
 	
 }

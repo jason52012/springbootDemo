@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
+
 import java.util.List;
 
-import com.example.demo.model.grid.OrderItemGrid;
+import com.example.demo.model.form.OrderQueryForm;
 import com.example.demo.model.requestParam.UserOrderRequestParam;
 import com.example.demo.model.vo.UserOrder;
 
@@ -13,4 +14,8 @@ public interface UserOrderService {
 	UserOrder findByOrderId(Integer orderId);
 	
 	UserOrder getAllOrderItemByItemId(Integer orderId);
+	
+	List<UserOrder> getOrders(OrderQueryForm orderQueryForm);
+	
+	Integer countOrder(OrderQueryForm orderQueryForm);
 }

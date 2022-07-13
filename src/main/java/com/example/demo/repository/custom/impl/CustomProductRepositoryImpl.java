@@ -32,13 +32,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 		
 		Query query = entityManager.createNativeQuery(sql.toString(), Product.class);
 		
-		if(queryForm.getCategory() != null) {
-			query.setParameter("CATEGORY", queryForm.getCategory().name());
-		}
-		
-		if(queryForm.getProductName()  != null) {
-			query.setParameter("PRODUCT_NAME", "%" + queryForm.getProductName()  + "%");
-		}
+		setValue(query, queryForm);
 		
 		return query.getResultList();
 	}
@@ -51,6 +45,8 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 		sql = getConditionSql(sql, queryForm);
 		
 		Query query = entityManager.createNativeQuery(sql.toString());
+		
+		setValue(query, queryForm);
 		
 		int count = Integer.parseInt(query.getSingleResult().toString());
 		return count;
@@ -73,6 +69,18 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 		sql.append(" ORDER BY " + queryForm.getOrderBy() + " " + queryForm.getSort());
 		
 		return sql ;
+	}
+	
+	private void setValue(Query query, ProductQueryForm queryForm) {
+		
+		if(queryForm.getCategory() != null) {
+			query.setParameter("CATEGORY", queryForm.getCategory().name());
+		}
+		
+		if(queryForm.getProductName()  != null) {
+			query.setParameter("PRODUCT_NAME", "%" + queryForm.getProductName()  + "%");
+		}
+		
 	}
 	
 }

@@ -6,5 +6,5 @@ import com.example.demo.model.grid.OrderItemGrid;
 
 public interface CustomOrderItemGridRepository {
 
-	List<OrderItemGrid> getAllOrderItemByItemId(Integer orderId);
+	List<OrderItemGrid> getAllOrderItemByOrderId(Integer orderId);
 }

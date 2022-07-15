@@ -26,9 +26,17 @@ public class CustomUserOrderRepositoryImpl implements CustomUserOrderRepository{
 		
 		sql = getConditionSql(sql, orderQueryForm);
 		
+		// order
+		sql.append(" ORDER BY CREATE_TIME DESC ");
+								
+		// pagination
+		sql.append(" LIMIT " + orderQueryForm.getLimit() + " OFFSET " + orderQueryForm.getOffset());
+		
 		Query query = entityManager.createNativeQuery(sql.toString(), UserOrder.class);
 		
 		setValue(query, orderQueryForm);
+		
+		
 		
 		return query.getResultList();
 	}
@@ -57,12 +65,6 @@ public class CustomUserOrderRepositoryImpl implements CustomUserOrderRepository{
 			sql.append(" AND USER_ID = :USER_ID ");
 		}
 		
-		// order
-		sql.append(" ORDER BY CREATE_TIME DESC ");
-				
-		// pagination
-		sql.append(" LIMIT " + orderQueryForm.getLimit() + " OFFSET " + orderQueryForm.getOffset());
-				
 		return sql;
 	}
 	

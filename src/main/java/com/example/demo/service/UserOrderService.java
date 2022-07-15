@@ -13,7 +13,7 @@ public interface UserOrderService {
 	
 	UserOrder findByOrderId(Integer orderId);
 	
-	UserOrder getAllOrderItemByItemId(Integer orderId);
+	UserOrder getAllOrderItemByOrderId(Integer OrderId);
 	
 	List<UserOrder> getOrders(OrderQueryForm orderQueryForm);
 	

@@ -49,7 +49,7 @@ public class UserControllerTest {
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(201))
-                .andExpect(jsonPath("$.userid", notNullValue()))
+                .andExpect(jsonPath("$.userId", notNullValue()))
                 .andExpect(jsonPath("$.e_mail", equalTo("test1@gmail.com")))
                 .andExpect(jsonPath("$.createTime", notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedTime", notNullValue()));

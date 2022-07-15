@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,14 +53,14 @@ public class UserOrderServiceImpl implements  UserOrderService{
 	
 	@Autowired
 	private CustomUserOrderRepository customUserOrderRepository;
-
+	
 	// @Transactional ensure two table insert successfully, or rollback all data
 	@Override
 	@Transactional
 	public Integer createOrder(Integer userId, UserOrderRequestParam userOrderRequestParam) {
-		User user = userRepository.getOne(userId);
+		 Optional<User> user = userRepository.findById(userId);
 		
-		if(user == null) {
+		if(user.isEmpty()) {
 			log.warn("此會員ID -> {} 沒有註冊資料", userId);
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
@@ -71,13 +72,17 @@ public class UserOrderServiceImpl implements  UserOrderService{
 		
 		List<BuyItem> buyItemList = userOrderRequestParam.getBuyItemList();
 		Integer total = buyItemList.stream().mapToInt(x -> {
-				Product product = productRepository.getOne(x.getProductId());
+				Optional<Product> productOpt = productRepository.findById(x.getProductId());
+				
 				Integer price = 0;
 				
-				if(product == null) {
+				if(productOpt.isEmpty()) {
 					log.warn(" 商品id -> {} ，找不到", x.getProductId());
-					
-				} else if(product.getStock() < x.getQuantity()){
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+				}
+				
+				Product product = productOpt.get() ;
+			    if(product.getStock() < x.getQuantity()){
 					log.warn(" 商品id -> {} , 庫存數 -> {} , 不足訂單數 -> {}", x.getProductId(), 
 																		  product.getStock(), 
 																		  x.getQuantity());
@@ -131,11 +136,11 @@ public class UserOrderServiceImpl implements  UserOrderService{
 	}
 
 	@Override
-	public UserOrder getAllOrderItemByItemId(Integer orderId) {
+	public UserOrder getAllOrderItemByOrderId(Integer orderId) {
 		UserOrder  userOrder  = orderRepository.getOne(orderId);
 		List<OrderItemGrid> OrderItemGridList = new ArrayList<>();
 		if(userOrder != null) {
-			OrderItemGridList = customOrderItemGridRepository.getAllOrderItemByItemId(orderId);
+			OrderItemGridList = customOrderItemGridRepository.getAllOrderItemByOrderId(orderId);
 			userOrder.setOrderItemGridList(OrderItemGridList);
 		}
 		return userOrder;
@@ -143,7 +148,12 @@ public class UserOrderServiceImpl implements  UserOrderService{
 
 	@Override
 	public List<UserOrder> getOrders(OrderQueryForm orderQueryForm) {
-		return customUserOrderRepository.getOrders(orderQueryForm);
+		List<UserOrder> UserOrderList = customUserOrderRepository.getOrders(orderQueryForm);
+		UserOrderList.stream().forEach(x ->{
+			List<OrderItemGrid> OrderItemGridList = customOrderItemGridRepository.getAllOrderItemByOrderId(x.getOrderId());
+			x.setOrderItemGridList(OrderItemGridList);
+		});
+		return UserOrderList;
 	}
 
 	@Override

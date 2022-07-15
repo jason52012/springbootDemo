@@ -19,7 +19,7 @@ public class CustomOrderItemGridRepositoryImpl implements CustomOrderItemGridRep
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrderItemGrid> getAllOrderItemByItemId(Integer orderId) {
+	public List<OrderItemGrid> getAllOrderItemByOrderId(Integer orderId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT oi.ORDER_ITEM_ID, oi.ORDER_ID, oi.ORDER_ID, oi.PRODUCT_ID, oi.QUANTITY, oi.AMOUNT, p.PRODUCT_NAME, p.IMAGE_URL ");
 		sql.append(" FROM ORDER_ITEM oi ");

@@ -62,7 +62,7 @@ public class UserOrderController {
 										 @RequestBody @Valid UserOrderRequestParam userOrderRequestParam){
 		
 		Integer orderId = userOrderService.createOrder(userId, userOrderRequestParam );
-		UserOrder userOrder = userOrderService.getAllOrderItemByItemId(orderId);
+		UserOrder userOrder = userOrderService.getAllOrderItemByOrderId(orderId);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userOrder);
 	}

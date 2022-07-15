@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,19 +32,24 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer productId;
 	
+	@NotNull
 	@Column(name = "PRODUCT_NAME", nullable=false)
 	private String productName;
 	
+	@NotNull
 	@Column(name = "CATEGORY", nullable=false)
 	@Enumerated(EnumType.STRING)
 	private ProductCategory category;
 	
+	@NotNull
 	@Column(name = "IMAGE_URL", nullable=false)
 	private String imageUrl;
 	
+	@NotNull
 	@Column(name = "PRICE", nullable=false)
 	private Integer price;
 	
+	@NotNull
 	@Column(name = "STOCK", nullable=false)
 	private Integer stock;
 	

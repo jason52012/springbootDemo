@@ -27,6 +27,9 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 		
 		sql = getConditionSql(sql, queryForm);
 		
+		// order
+		sql.append(" ORDER BY " + queryForm.getOrderBy() + " " + queryForm.getSort());
+				
 		// pagination
 		sql.append(" LIMIT " + queryForm.getLimit() + " OFFSET " + queryForm.getOffset());
 		
@@ -64,9 +67,6 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
 		if(queryForm.getProductName() != null) {
 			sql.append(" AND PRODUCT_NAME LIKE :PRODUCT_NAME ");
 		}
-		
-		// order
-		sql.append(" ORDER BY " + queryForm.getOrderBy() + " " + queryForm.getSort());
 		
 		return sql ;
 	}

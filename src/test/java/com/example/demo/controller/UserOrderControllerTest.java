@@ -74,7 +74,7 @@ public class UserOrderControllerTest {
 	
 	@Test
 	@Transactional
-	public void createOrder_fail_emptyBuyItemList() throws Exception {
+	public void createOrder_emptyBuyItemList() throws Exception {
 		UserOrderRequestParam userOrderRequestParam = new UserOrderRequestParam();
 		List<BuyItem> buyItemList = new ArrayList<>();
 		
@@ -93,7 +93,7 @@ public class UserOrderControllerTest {
 	
 	@Test
 	@Transactional
-	public void createOrder_fail_userNotExist() throws Exception {
+	public void createOrder_userNotExist() throws Exception {
 		UserOrderRequestParam userOrderRequestParam = new UserOrderRequestParam();
 		List<BuyItem> buyItemList = new ArrayList<>();
 		
@@ -117,7 +117,7 @@ public class UserOrderControllerTest {
 	
 	@Transactional
     @Test
-    public void createOrder_fail_productNotExist() throws Exception {
+    public void createOrder_productNotExist() throws Exception {
 		
 		UserOrderRequestParam userOrderRequestParam = new UserOrderRequestParam();
         List<BuyItem> buyItemList = new ArrayList<>();
@@ -143,7 +143,7 @@ public class UserOrderControllerTest {
 	
 	@Transactional
     @Test
-    public void createOrder_fail_stockNotEnough() throws Exception {
+    public void createOrder_stockNotEnough() throws Exception {
 		UserOrderRequestParam userOrderRequestParam = new UserOrderRequestParam();
         List<BuyItem> buyItemList = new ArrayList<>();
 
@@ -193,7 +193,7 @@ public class UserOrderControllerTest {
     	
     }
     @Test
-    public void getOrders_success_pagination() throws Exception {
+    public void getOrders_pagination() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/users/{userId}/orders", 1)
                 .param("limit", "2")
@@ -208,7 +208,7 @@ public class UserOrderControllerTest {
     }
     
     @Test
-    public void getOrders_success_userHasNoOrder() throws Exception {
+    public void getOrders_userHasNoOrder() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/users/{userId}/orders", 2);
 

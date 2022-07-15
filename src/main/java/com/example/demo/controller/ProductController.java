@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -64,8 +65,8 @@ public class ProductController {
 	public ResponseEntity<Product> findByProductId(@PathVariable Integer productId) {
 		Optional<Product> product = productService.findByProductId(productId);
 		
-		if(product !=null) {
-			return ResponseEntity.status(HttpStatus.OK).body(product.orElse(new Product()));
+		if(product.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(product.get());
 		}else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -73,15 +74,21 @@ public class ProductController {
 	}
 	
 	@PostMapping("/products/saveProduct")
-	public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+	public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product product) {
 		
+		Integer statusCode;
+		if(product != null && product.getProductId() != null) {
+			statusCode = HttpStatus.OK.value();
+		} else {
+			statusCode = HttpStatus.CREATED.value();
+		}
 		
 		productService.saveOrUpdate(product);
 		
 		Optional<Product> savedProduct = productService.findByProductId(product.getProductId());
 		
 		if(savedProduct.isPresent()) {
-			return ResponseEntity.status(HttpStatus.OK).body(savedProduct.orElse(new Product()));
+			return ResponseEntity.status(statusCode).body(savedProduct.get());
 		}else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -89,9 +96,13 @@ public class ProductController {
 	
 	@DeleteMapping("/products/deleteProduct/{productId}")
 	public ResponseEntity<Product> deleteProduct(@PathVariable Integer productId) {
-			productService.deleteByProductId(productId);
-			
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			Optional<Product> productOpt = productService.findByProductId(productId);
+			if(productOpt.isPresent()) {
+				productService.deleteByProductId(productId);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
 	}
 	
 }

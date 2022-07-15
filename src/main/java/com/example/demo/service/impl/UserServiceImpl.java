@@ -51,10 +51,10 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		String hashedPassword = DigestUtils.md5DigestAsHex(userLoginRequestParam.getPassword().getBytes());
-		if(oldUser.getPassword().equals(hashedPassword)) {
+		if(oldUser!= null && oldUser.getPassword().equals(hashedPassword)) {
 			return oldUser;
 		}else {
-			log.warn("該 email -> {} 與 pawword  -> {} 沒有會員資料 ",  oldUser.getEmail(), oldUser.getPassword());
+			log.warn("該 email -> {}  未被註冊會員 ",  userLoginRequestParam.getEmail(), userLoginRequestParam.getPassword());
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}	
 			
